@@ -3,6 +3,19 @@
   "version": "1.0.0",
   "main": "server.js",
   "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Ashframe",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashframe-org/cubyz-model-hub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ashframe-org/cubyz-model-hub/issues"
+  },
+  "homepage": "https://github.com/ashframe-org/cubyz-model-hub#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^11.10.0",
