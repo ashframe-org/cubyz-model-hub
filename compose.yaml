@@ -1,0 +1,13 @@
+services:
+  models:
+    build: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 6767
+      SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in .env}
+    ports:
+      - "127.0.0.1:6767:6767"
+    volumes:
+      - ./runtime/repo.db:/app/repo.db
+      - ./runtime/uploads:/app/uploads

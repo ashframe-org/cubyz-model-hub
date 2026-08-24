@@ -1,0 +1,263 @@
+:root {
+    --bg: #1e1e1e;
+    --bg-alt: #171717;
+    --card-bg: #222825;
+    --accent: #5BA65B;
+    --accent-dark: #CC7F39;
+    --text: #ddd;
+    --text-muted: #999;
+    --border: #333;
+    --radius: 10px;
+    --transition: 0.25s ease;
+    --font-family: system-ui, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    background: #1A1F1C;
+    color: #f2efe9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 2rem;
+    background: #1b1f1d;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    position: relative;
+    z-index: 1000;
+}
+
+.site-header h2 {
+    color: var(--accent);
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.auth-box {
+    display: flex;
+    gap: 10px;
+}
+
+input, select, button {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    font-family: var(--font-family);
+    transition: var(--transition);
+}
+
+button {
+    background: var(--accent);
+    color: #1a1f1c;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+}
+
+button:hover {
+    background: #6ebd6e;
+    transform: translateY(-1px);
+}
+
+.filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    color: #fff;
+    margin: 30px 0 15px 0;
+    font-weight: bold;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    position: relative;
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+}
+
+.card-header {
+    padding: 12px;
+    font-weight: bold;
+    font-size: 1.05rem;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.canvas-container {
+    width: 100%;
+    height: 230px;
+    background: var(--bg-alt);
+    position: relative;
+}
+
+.card-footer {
+    padding: 12px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background: var(--bg-alt);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--border);
+}
+
+.meta-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meta-line span b {
+    color: #fff;
+}
+
+.download-btn {
+    flex: 1;
+    text-align: center;
+    background: var(--bg);
+    color: var(--text);
+    text-decoration: none;
+    padding: 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.download-btn:hover {
+    background: var(--card-bg);
+    color: #fff;
+    border-color: var(--text-muted);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 25px;
+    border-radius: var(--radius);
+    z-index: 100;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 99;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.remix-split {
+    display: flex;
+    gap: 20px;
+    width: 620px;
+    height: 360px;
+}
+
+.canvas-wrapper {
+    position: relative;
+    background-image: linear-gradient(45deg, #111 25%, transparent 25%), linear-gradient(-45deg, #111 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #111 75%), linear-gradient(-45deg, transparent 75%, #111 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    border-radius: var(--radius);
+    display: block;
+    /* Generates an invisible buffer zone surrounding only the canvas object itself */
+    margin: 300px;
+    padding: 0;
+}
+
+.pixel-canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#canvasScrollContainer {
+flex: 1;
+background: #0b0c0b;
+border-radius: var(--radius);
+border: 1px solid var(--border);
+overflow: auto;
+position: relative;
+/* Display grid allows the inner wrapper to expand without clipping its parent borders */
+display: grid;
+place-items: center;
+}
+.custom-file-upload {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    font-family: var(--font-family);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+.custom-file-upload:hover {
+    border-color: var(--accent);
+    color: #fff;
+}

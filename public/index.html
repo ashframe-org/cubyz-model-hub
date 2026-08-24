@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cubyz Hub - Models</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body>
+<script>
+  document.addEventListener('contextmenu', event => event.preventDefault());
+  document.addEventListener('keydown', (e) => {
+    if (
+      e.key === 'F12' ||
+      (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
+      (e.ctrlKey && e.key === 'U')
+    ) {
+      e.preventDefault();
+      return false;
+    }
+  });
+</script>
+  <header class="site-header">
+    <h2>Cubyz Hub - Models</h2>
+    <div class="auth-box" id="authBox">
+      <button onclick="toggleAuthModal(true)" style="background:transparent; color:var(--accent); border:1px solid var(--border);">Login / Register</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-title">Official Models</div>
+    <div class="grid" id="officialGrid"></div>
+
+    <hr style="border: 0; border-top: 1px solid var(--border); margin: 40px 0;">
+
+    <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
+      <span>Community Creations</span>
+      <select id="sortSelector" style="font-size: 0.9rem; padding: 4px 8px;">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="votes">Most Votes</option>
+      </select>
+    </div>
+    <div class="grid" id="assetGrid"></div>
+  </main>
+
+  <div class="modal-overlay" id="authOverlay" onclick="toggleAuthModal(false)"></div>
+  <div class="modal" id="authModal">
+    <h3>Sign In</h3>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Username">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Password">
+    </div>
+    <div style="display: flex; gap: 10px; margin-top: 15px;">
+      <button onclick="auth('login')" style="flex: 1;">Login</button>
+      <button onclick="auth('register')" style="flex: 1; background: var(--accent-dark); color:#fff;">Register</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="overlay" onclick="toggleModal(false)"></div>
+  <div class="modal" id="uploadModal">
+    <h3>Upload New Models</h3>
+    <form id="uploadForm" onsubmit="handleUpload(event)">
+      <div class="form-group">
+        <label>Model Name</label>
+        <input type="text" name="title" required>
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select name="asset_type" id="assetTypeSelect" onchange="toggleUploadFields()">
+          <option value="full_model">Full Custom Model (.glb + .png)</option>
+          <option value="skin_only">Skin Only (.png for base model)</option>
+        </select>
+      </div>
+      <div class="form-group" id="modelTargetField" style="display:none;">
+        <label>Target Base Model</label>
+        <select name="associated_model" id="associatedModelSelect">
+          <option value="cubyz:snale">Snale</option>
+          <option value="cubyz:snail">Snail</option>
+          <option value="cubyz:moffalo">Moffalo</option>
+          <option value="cubyz:cubert">Cubert</option>
+        </select>
+      </div>
+      <div class="form-group" id="glbField">
+        <label>Model File (.glb)</label>
+        <input type="file" name="glb" accept=".glb">
+      </div>
+      <div class="form-group">
+        <label>Texture File (.png)</label>
+        <input type="file" name="texture" accept=".png" required>
+      </div>
+      <button type="submit">Submit Asset</button>
+    </form>
+  </div>
+
+  <div class="modal-overlay" id="remixOverlay" onclick="toggleRemixModal(false)"></div>
+  <div class="modal" id="remixModal" style="width: 1440px; max-width: 95vw; height: 816px; flex-direction: column; gap: 15px;">
+    <h3 style="margin: 0; display: flex; justify-content: space-between; align-items: center;">
+      <span>Remixing Station</span>
+      <span id="paintStatus" style="font-size: 0.8rem; color: var(--accent); font-weight: normal; opacity: 0;">Updating 3D View...</span>
+    </h3>
+
+    <div class="remix-split" style="width: 100%; height: 600px; display: flex; gap: 20px;">
+
+      <div id="remixCanvasContainer" style="width: 38%; height: 100%; background: var(--bg-alt); border-radius: var(--radius); border: 1px solid var(--border);"></div>
+
+      <div style="width: 62%; height: 100%; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; gap: 8px; align-items: center; background: var(--bg-alt); padding: 8px; border-radius: var(--radius); border: 1px solid var(--border); flex-wrap: wrap;">
+
+          <div style="display: flex; gap: 4px; border-right: 1px solid var(--border); padding-right: 8px;">
+            <button onclick="setTool('paint')" id="btnToolPaint" style="padding: 4px 8px; font-size: 0.75rem; background: var(--accent); color: #1a1f1c;">🖌️</button>
+            <button onclick="setTool('pan')" id="btnToolPan" style="padding: 4px 8px; font-size: 0.75rem; background: var(--bg); color: var(--text);">✋</button>
+          </div>
+
+          <div style="display: flex; gap: 4px; border-right: 1px solid var(--border); padding-right: 8px;">
+            <button onclick="changeZoom(0.5)" style="padding: 4px 8px; font-size: 0.75rem; background: var(--bg); color: var(--text);">🔍+</button>
+            <button onclick="changeZoom(-0.5)" style="padding: 4px 8px; font-size: 0.75rem; background: var(--bg); color: var(--text);">🔍-</button>
+          </div>
+
+          <div class="form-group" style="margin: 0; flex-direction: row; align-items: center; gap: 5px;">
+            <input type="color" id="paintColor" value="#5BA65B" style="padding: 0; width: 28px; height: 28px; cursor: pointer; border: none;">
+          </div>
+          <div class="form-group" style="margin: 0; flex-direction: row; align-items: center; gap: 5px;">
+            <label style="font-size: 0.8rem;">Size:</label>
+            <input type="range" id="brushSize" min="1" max="8" value="1" style="width: 40px;">
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 4px; font-size: 0.75rem; margin-left: auto;">
+            <input type="checkbox" id="showGridToggle" checked onchange="toggleGridOverlay()" style="cursor: pointer; margin: 0;">
+            <label for="showGridToggle" style="cursor: pointer;">Grid</label>
+            <button onclick="undoPaint()" style="font-size: 0.75rem; padding: 2px 6px; background: var(--bg); color: var(--text); border: 1px solid var(--border); margin-left: 4px;">Undo</button>
+            <button onclick="clearToBaseTexture()" style="font-size: 0.75rem; padding: 2px 6px; background: var(--bg); color: var(--text); border: 1px solid var(--border);">Reset</button>
+          </div>
+        </div>
+
+        <div id="canvasScrollContainer">
+          <div class="canvas-wrapper" id="paintAreaContainer" style="position: relative;">
+            <canvas id="texturePainter" class="pixel-canvas" style="z-index: 1;"></canvas>
+            <canvas id="gridOverlayCanvas" class="pixel-canvas" style="z-index: 2; cursor: crosshair; pointer-events: auto;"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="width: 100%; border-top: 1px solid var(--border); padding-top: 15px; display: flex; gap: 20px; align-items: flex-end;">
+      <div class="form-group" style="flex: 2; margin: 0;">
+        <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 4px;">Remix Name</label>
+        <input type="text" id="remixAssetTitle" placeholder="My Custom Skin" style="width: 100%;">
+      </div>
+
+      <div class="form-group" style="flex: 1; margin: 0;">
+        <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 4px;">Import Base Texture</label>
+        <label class="custom-file-upload">
+          <input type="file" id="remixTextureInput" accept=".png" onchange="handleRemixTextureChange(event)" style="display: none;">Choose Texture file
+        </label>
+      </div>
+
+      <button onclick="submitRemix()" style="flex: 1; padding: 10px 0; height: 40px;">Publish Remix</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
