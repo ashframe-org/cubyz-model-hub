@@ -23,21 +23,29 @@
   });
 </script>
   <header class="site-header">
-    <h2>Cubyz Hub - Models</h2>
+    <a class="brand" href="/" aria-label="Ashframe Model Hub">
+      <span class="brand-mark" aria-hidden="true">A</span>
+      <span>ASHFRAME</span>
+      <span class="brand-context">/ CUBYZ MODELS</span>
+    </a>
     <div class="auth-box" id="authBox">
-      <button onclick="toggleAuthModal(true)" style="background:transparent; color:var(--accent); border:1px solid var(--border);">Login / Register</button>
+      <button class="outline-button" onclick="toggleAuthModal(true)">Login / Register</button>
     </div>
   </header>
 
   <main>
-    <div class="section-title">Official Models</div>
+    <section class="intro">
+      <p class="eyebrow">// CUBYZ MODEL HUB</p>
+      <h1>MODELS.<br><em>MADE TO SHARE.</em></h1>
+      <p>Official Cubyz models and community creations in one place.</p>
+    </section>
+
+    <div class="section-title"><span>// OFFICIAL MODELS</span><span>CURATED</span></div>
     <div class="grid" id="officialGrid"></div>
 
-    <hr style="border: 0; border-top: 1px solid var(--border); margin: 40px 0;">
-
-    <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="section-title section-title-controls">
       <span>Community Creations</span>
-      <select id="sortSelector" style="font-size: 0.9rem; padding: 4px 8px;">
+      <select id="sortSelector" aria-label="Sort community creations">
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
         <option value="votes">Most Votes</option>

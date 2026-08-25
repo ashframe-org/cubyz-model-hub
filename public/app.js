@@ -70,13 +70,13 @@ async function loadAssets() {
             loggedIn = true;
             const authBox = document.getElementById('authBox');
             authBox.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 12px;">
-            <span>Welcome, <b>${escapeHTML(authData.username)}</b></span>
-            <button onclick="toggleModal(true)" style="font-size: 0.8rem; padding: 6px 12px; background: var(--accent); color: #1a1f1c; font-weight: bold; cursor: pointer; border: 1px solid var(--border);">Upload Asset</button>
+            <div class="account-actions">
+            <span class="account-name">Welcome, <b>${escapeHTML(authData.username)}</b></span>
+            <button id="uploadBtn" class="upload-button" onclick="toggleModal(true)">Upload Asset</button>
             </div>`;
         } else {
             loggedIn = false;
-            document.getElementById('authBox').innerHTML = `<button onclick="toggleAuthModal(true)" style="background:transparent; color:var(--accent); border:1px solid var(--border); cursor: pointer;">Login / Register</button>`;
+            document.getElementById('authBox').innerHTML = `<button class="outline-button" onclick="toggleAuthModal(true)">Login / Register</button>`;
         }
     } catch (e) {
         console.error("Auth persistent validation failed:", e);
